@@ -1,0 +1,39 @@
+# Built application files
+*.apk
+*.aab
+*.ap_
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Generated files
+/build/
+/app/build/
+/captures/
+
+# Gradle files
+.gradle/
+build/
+caches/
+local.properties
+
+# Local configuration files
+/.idea/workspace.xml
+/.idea/libraries/
+.DS_Store
+
+# Keystore files
+*.jks
+*.keystore
+
+# External native build folder created in Android Studio 2.2 and later
+.cxx/
+
+# Google Services file
+*/google-services.json
+
+# Log Files
+*.log
