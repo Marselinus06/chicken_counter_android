@@ -25,7 +25,7 @@ class YoloTFLiteDetector private constructor(
     private val delegate: Delegate? = null
 ) {
     private val inputSize = 640
-    private val confidenceThreshold = 0.90f
+    private val confidenceThreshold = 0.45f
     private val iouThreshold = 0.40f
 
     companion object {
@@ -67,25 +67,21 @@ class YoloTFLiteDetector private constructor(
         val pixels = IntArray(inputSize * inputSize)
         scaled.getPixels(pixels, 0, inputSize, 0, 0, inputSize, inputSize)
 
-        var idx = 0
-        for (i in 0 until inputSize) {
-            val v = pixels[idx++]
-            buffer.putFloat(((v shr 16 and 0xFF) / 255f))
-            buffer.putFloat(((v shr 8 and 0xFF) / 255f))
-            buffer.putFloat(((v and 0xFF) / 255f))
+        for (pixelValue in pixels) {
+            buffer.putFloat(((pixelValue shr 16 and 0xFF) / 255f))
+            buffer.putFloat(((pixelValue shr 8 and 0xFF) / 255f))
+            buffer.putFloat(((pixelValue and 0xFF) / 255f))
         }
         return buffer
     }
 
     fun detect(bitmapInput: Bitmap): Triple<Int, Float, Bitmap> {
         val inputBuffer = convertBitmapToByteBuffer(bitmapInput)
-
-        // 🔍 deteksi bentuk output secara otomatis
+        
         val outputTensor = interpreter.getOutputTensor(0)
         val outputShape = outputTensor.shape() // contoh [1,5,8400] atau [1,8400,5]
         Log.d("YOLO_DETECTOR", "Output tensor shape: ${outputShape.contentToString()}")
 
-        // Buat output array dinamis sesuai bentuk model
         val outputData = when {
             outputShape.size == 3 -> Array(outputShape[0]) {
                 Array(outputShape[1]) { FloatArray(outputShape[2]) }
@@ -95,7 +91,6 @@ class YoloTFLiteDetector private constructor(
 
         interpreter.run(inputBuffer, outputData)
 
-        // Normalisasi bentuk menjadi [5, N] agar mudah diproses
         val detections = mutableListOf<Detection>()
         val (_, numDetections) = if (outputShape[1] < outputShape[2])
             Pair(outputShape[1], outputShape[2]) else Pair(outputShape[2], outputShape[1])

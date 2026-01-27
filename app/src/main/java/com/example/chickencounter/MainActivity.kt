@@ -32,8 +32,7 @@ class MainActivity : AppCompatActivity() {
     private var detector: YoloTFLiteDetector? = null
     private lateinit var imgView: ImageView
     private lateinit var txtCount: TextView
-    private val MODEL_FILE = "200x16broiler.tflite"
-    private val LABEL_FILE = "labels.txt"
+    private val MODEL_FILE = "broilerdoc_float32.tflite"
 
     private var photoUri: Uri? = null
     private var photoFile: File? = null
