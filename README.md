@@ -1,5 +1,5 @@
 # ChickenCounter (Android Kotlin)
-This is a minimal Android Studio project skeleton for an offline chicken counting app using a TFLite YOLO model.
+Ini adalah kerangka proyek Android Studio minimal untuk aplikasi penghitungan ayam offline yang menggunakan model TFLite YOLO.
 
 ## How to use
 1. Export your trained YOLOv11 model to **TFLite** from Ultralytics (Kaggle):
